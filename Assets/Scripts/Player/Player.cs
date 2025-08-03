@@ -6,6 +6,10 @@ namespace KitchenChaosLearn.Assets.Scripts.Player
     {
         [SerializeField]
         private int _moveSpeed = 7;
+        [SerializeField]
+        private float _speedRotation = 10f;
+
+        public bool IsWalking { get; private set; }
 
         private void Update()
         {
@@ -29,7 +33,10 @@ namespace KitchenChaosLearn.Assets.Scripts.Player
 
             inputManager = inputManager.normalized;
             Vector3 moveDirection = new(inputManager.x, 0f, inputManager.y);
+            IsWalking = moveDirection != Vector3.zero;
             transform.position += moveDirection * Time.deltaTime * _moveSpeed;
+            transform.forward = Vector3.Slerp(transform.forward, moveDirection, Time.deltaTime * _speedRotation);
         }
+
     }
 }
